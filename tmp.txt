@@ -1,0 +1,8 @@
+sudo systemctl stop nginx;
+sudo chown vmadmin:docker /var/run/docker.sock;
+chmod 666 /var/run/docker.sock;
+bash /home/vmadmin/kub/rmDockerImages.bash;
+
+
+
+$(Build.Repository.Name):$(Build.BuildId)

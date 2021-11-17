@@ -1,0 +1,16 @@
+[defaults]
+subscription_id=bf30682f-317e-4047-b932-707881dc4de8
+client_id=2d57d9be-4458-4caf-88ea-7153c905fd24
+secret=8Nk7Q~vzegU3fUYc7Ggcr_Fg3LOW2tJuazQ1B
+tenant=8f501023-d133-40bb-b595-c4be422ec157
+
+
+        offer: '0001-com-ubuntu-server-focal'
+        publisher: Canonical
+        sku: '20_04-lts'
+        version: latest
+
+sudo apt-get install -y python-pip
+pip install packaging
+pip install msrestazure
+sudo pip install ansible[azure]

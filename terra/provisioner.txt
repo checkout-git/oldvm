@@ -1,0 +1,25 @@
+provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install docker.* -y",
+      "sudo apt install openjdk-11-jre-headless -y",
+      "sudo apt install maven -y",
+      "sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
+      "sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
+      "sudo apt-get update",
+      "sudo apt-get install jenkins -y",
+      "sudo systemctl start jenkins",
+      "sudo apt-get update",
+      "sudo apt install ansible -y",
+      "sudo apt-get install tree -y",
+      "sudo apt-get install nginx -y",
+      "sudo curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash"
+    ]
+
+    connection {
+      type     = "ssh"
+      host     = element(azurerm_public_ip.lab1_vm_public_ip.*.ip_address, count.index)
+      user     = "vmadmin"
+      password = "Password@1234"
+    }
+  }

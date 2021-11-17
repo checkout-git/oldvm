@@ -1,0 +1,19 @@
+#!/bin/bash
+
+IMAGES=$(docker images | awk -F' ' '{print $3}')
+
+COUNTER=1
+
+#for image in "${IMAGES[@]}"
+for image in `docker images | awk -F' ' '{print $3}'`
+do
+        if [[ $COUNTER -gt 1 ]]
+        then
+                echo "########## $COUNTER : Removing Docker Image - $image ##########"
+                docker rmi $image
+                COUNTER=$(expr $COUNTER + 1)
+        else
+                COUNTER=$(expr $COUNTER + 1)
+        fi
+done
+
