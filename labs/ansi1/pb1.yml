@@ -1,0 +1,61 @@
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      resource_group: lab1-task-RG
+      name: ansiVnet
+      location: eastus
+      address_prefixes: "10.0.0.0/16"
+  - name: Add subnet
+    azure_rm_subnet:
+      resource_group: lab1-task-RG
+      name: ansiSubnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: ansiVnet
+  - name: Create public IP address
+    azure_rm_publicipaddress:
+      resource_group: lab1-task-RG
+      allocation_method: Static
+      name: ansiPublicIP
+      location: eastus
+    register: output_ip_address
+  - name: Public IP of VM
+    debug:
+      msg: "The public IP is {{ output_ip_address.state.ip_address }}."
+  - name: Create Network Security Group that allows SSH
+    azure_rm_securitygroup:
+      resource_group: lab1-task-RG
+      name: ansiNetworkSecurityGroup
+      location: eastus
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: "*"
+          access: Allow
+          priority: 100
+          direction: Inbound
+  - name: Create virtual network interface card
+    azure_rm_networkinterface:
+      resource_group: lab1-task-RG
+      name: ansiNIC
+      location: eastus
+      virtual_network: ansiVnet
+      subnet: ansiSubnet
+      public_ip_name: ansiPublicIP
+      security_group: ansiNetworkSecurityGroup
+  - name: Create VM
+    azure_rm_virtualmachine:
+      resource_group: lab1-task-RG
+      name: ansivm
+      location: eastus
+      vm_size: Standard_A1_v2
+      admin_username: vmadmin
+      admin_password: Password@1234
+      network_interfaces: ansiNIC
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest

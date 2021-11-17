@@ -1,0 +1,22 @@
+----
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Create VM with defaults
+    azure_rm_virtualmachine:
+      resource_group: ansible_rg
+      name: ansi-vm
+      vm_size: Standard_A1_v2
+      admin_username: vmadmin
+      admin_password: Password@1234
+      image:
+        offer: '0001-com-ubuntu-server-focal'
+        publisher: Canonical
+        sku: '20_04-lts'
+        version: latest
+
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest

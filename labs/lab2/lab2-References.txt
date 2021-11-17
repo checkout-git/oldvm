@@ -1,0 +1,3 @@
+https://azuredevopslabs.com/labs/vstsextend/kubernetes/
+
+https://azuredevopslabs.com/labs/vstsextend/terraform/
